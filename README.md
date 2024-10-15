@@ -1,6 +1,6 @@
 # FrontPy
 
-FrontPy is a Python package designed for the detection and analysis of atmospheric fronts. It uses the Thermal Front Parameter (TFP) method to identify cold and warm fronts. The package also includes visualization capabilities, allowing users to plot the identified fronts over GOES-16 satellite imagery.
+FrontPy is a Python package designed for the detection and analysis of atmospheric fronts. It uses the Thermal Front Parameter (TFP) method to identify cold and warm fronts. The package also includes visualization capabilities, allowing users to plot the identified fronts over GOES-16 East satellite imagery.
 
 Currently, only analysis and forecast data from the GFS 0.25 Degree Global Forecast model are supported.
 
@@ -87,6 +87,8 @@ Lastly, you can plot the results and generate an animation (GIF) using the *plot
 ```    
 plot_results(cold_fronts, warm_fronts, config)
 ```
+
+**Obs**: For now, it is only possible to generate images within the coverage area of GOES-16 East.
 
 ### Command Line Interface (CLI)
 
