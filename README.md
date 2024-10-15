@@ -1,6 +1,6 @@
 # FrontPy
 
-FrontPy is a Python package designed for the detection and analysis of atmospheric fronts. It computes thermal front parameters (TFP) using wet-bulb temperature at 850 hPa to identify cold and warm fronts. The package also includes visualization capabilities, allowing users to plot the identified fronts over GOES-16 satellite imagery.
+FrontPy is a Python package designed for the detection and analysis of atmospheric fronts. It uses the Thermal Front Parameter (TFP) method to identify cold and warm fronts. The package also includes visualization capabilities, allowing users to plot the identified fronts over GOES-16 satellite imagery.
 
 ## Installation of FrontPy
 
@@ -32,7 +32,7 @@ pip install frontpy
 
 ## Usage
 
-To use FronPy for detecting and analyzing atmospheric fronts, follow these steps:
+To use FrontPy for detecting and analyzing atmospheric fronts, follow these steps:
 
 1. **Import the main function** from the package:
 
@@ -40,7 +40,9 @@ To use FronPy for detecting and analyzing atmospheric fronts, follow these steps
     from frontpy import main, plot_results
     ```
 
-2. **Set up the user parameters for detecting fronts based on the TFP method** in a dictionary. For example:
+2. **Set up the parameters needed for detecting the cold and warm fronts inside a dictionary**. 
+
+For example:
 
     ```python
     config = {
@@ -64,7 +66,7 @@ To use FronPy for detecting and analyzing atmospheric fronts, follow these steps
     }
     ```
 
-3. **Call the main function** with the configuration:
+3. **Call the main function**:
 
     ```python
     cold_fronts, warm_fronts = main(config)
@@ -86,7 +88,7 @@ To run FrontPy using the CLI, execute the following command in your terminal:
 fronts <start_date> <end_date> <lat_max> <lat_min> <lon_max> <lon_min> <line_or_area> <output_directory_fronts>
 ```
 
-The arguments above are required and must be provided in string format and in the specified order. You can also input the optional arguments using the following prefixes:
+The above arguments are mandatory and must be provided in string format and in the specified order. Optional arguments can also be included using the following prefixes before the values of your choice:
 
 - `--model-name`
 - `--pressure`
