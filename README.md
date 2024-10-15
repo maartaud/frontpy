@@ -47,6 +47,8 @@ To use FrontPy for detecting and analyzing atmospheric fronts, follow these step
 The parameters must be provided in a dictionary, like the following:
 
     ```python
+    from frontpy import main, plot_results
+    
     config = {
     "start_date": "2024-10-11 12",  # Start date and time for the analysis (format: YYYY-MM-DD HH) - string
     "end_date": "2024-10-12 12",    # End date and time for the analysis (format: YYYY-MM-DD HH) - string
@@ -82,7 +84,7 @@ So, you can call the main function like this:
 
 Lastly, you can plot the results and generate an animation using the *plot_results* function. The images and animation will be saved in your output directory.
 
-    ```bash
+    ```    
     plot_results(cold_fronts, warm_fronts, config)
     ```
 
