@@ -46,10 +46,8 @@ To use FrontPy for detecting and analyzing atmospheric fronts, follow these step
 
 The parameters must be provided in a dictionary, like the following:
 
-    ```python
-    from frontpy import main, plot_results
-    
-    config = {
+```python
+config = {
     "start_date": "2024-10-11 12",  # Start date and time for the analysis (format: YYYY-MM-DD HH) - string
     "end_date": "2024-10-12 12",    # End date and time for the analysis (format: YYYY-MM-DD HH) - string
     "lat_max": 20,                  # Maximum latitude for the analysis area (degrees, range: -90 to 90) - float
@@ -67,8 +65,8 @@ The parameters must be provided in a dictionary, like the following:
     "min_area": 5000.0,             # [Default: 5000.0] Minimum area (km²) for the frontal line to be considered - float
     "frame_rate": 3.0,              # [Default: 3.0] Frame rate (frames per second) for the generated animation; higher rates result in a faster animation - float
     "output_directory_fronts": "path_to_your_chosen_output_directory"   # Path to your output directory
-    }
-    ```
+}
+```
 
 3. **Call the main function**:
 
