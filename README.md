@@ -38,9 +38,9 @@ To use FrontPy for detecting and analyzing atmospheric fronts, follow these step
 
 1. **Import the main function** from the package:
 
-    ```python
-    from frontpy import main, plot_results
-    ```
+```python
+from frontpy import main, plot_results
+```
 
 2. **Set up the parameters required for downloading the data, calculating the Thermal Front Parameter (TFP), detecting cold and warm fronts, and final visualization**. 
 
@@ -74,17 +74,17 @@ The *main* function will return two dataframes: one for cold fronts and one for 
 
 So, you can call the main function like this:
 
-    ```python
-    cold_fronts, warm_fronts = main(config)
-    ```
+```python
+cold_fronts, warm_fronts = main(config)
+```
 
 4. **Plot the images and generate an animation**:
 
 Lastly, you can plot the results and generate an animation using the *plot_results* function. The images and animation will be saved in your output directory.
 
-    ```    
-    plot_results(cold_fronts, warm_fronts, config)
-    ```
+```    
+plot_results(cold_fronts, warm_fronts, config)
+```
 
 ### Command Line Interface (CLI)
 
