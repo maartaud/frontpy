@@ -14,7 +14,7 @@ First, you should create a new environment with the specific version of Python a
 conda create -n your_environment_name python=3.9.15 gdal=3.3.3 poppler=21.09 -c conda-forge
 ```
 
-Replace *your_environment_name* with your desired name for the environment. The conda will create an isolated environment with Python 3.9.15 and the gdal and poppler libraries, which are necessary for the functionality of FrontPy.
+Replace *your_environment_name* with your desired name for the environment. The conda will create an isolated environment with Python 3.9.15 and the gdal and poppler libraries, which are necessary for the functionality of FrontPy. This will ensure that FrontPy will run smoothly.
 
 ### Step 2: Activate your new Conda environment
 
@@ -67,6 +67,11 @@ config = {
     "output_directory_fronts": "path_to_your_chosen_output_directory"   # Path to your output directory
 }
 ```
+
+Currently, the default values have only been tested for the Southern Hemisphere.
+
+**Note:** Be carefull with the amount of smoothing applied to the data. It is recommended to use the default value (0.5).
+
 
 3. **Call the main function**:
 
