@@ -1,3 +1,35 @@
+Metadata-Version: 2.1
+Name: frontpy
+Version: 0.1.6
+Summary: FrontPy is a Python package designed for the detection and analysis of atmospheric fronts. It computes thermal front parameters (TFP) using wet-bulb temperature at 850 hPa to identify cold and warm fronts. The package also includes visualization capabilities, allowing users to plot identified fronts over GOES-16 satellite imagery.
+Author-email: Marcelo Souza <marcelo.rodriso@gmail.com>
+Keywords: fronts,tfp,thermal front parameter,meteorology
+Classifier: Development Status :: 4 - Beta
+Classifier: License :: OSI Approved :: Apache Software License
+Classifier: Programming Language :: Python :: 3
+Requires-Python: >=3.9.15
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: aiobotocore==2.15.2
+Requires-Dist: boto3==1.35.36
+Requires-Dist: cartopy>=0.23.0
+Requires-Dist: gdal==3.3.3
+Requires-Dist: geopandas>=1.0.1
+Requires-Dist: goes2go>=2024.7.0
+Requires-Dist: ipython>=8.12.3
+Requires-Dist: matplotlib>=3.9.2
+Requires-Dist: metpy>=1.6.3
+Requires-Dist: netcdf4>=1.6.0
+Requires-Dist: numpy>=1.26.4
+Requires-Dist: pandas>=2.2.3
+Requires-Dist: typer
+Requires-Dist: psutil>=5.9.0
+Requires-Dist: scipy>=1.13.1
+Requires-Dist: shapely>=2.0.6
+Requires-Dist: siphon>=0.9
+Requires-Dist: s3transfer==0.10.3
+Requires-Dist: xarray>=2024.7.0
+
 # FrontPy
 
 FrontPy is a Python package designed for the detection and analysis of atmospheric fronts. It computes thermal front parameters (TFP) using wet-bulb temperature at 850 hPa to identify cold and warm fronts. The package also includes visualization capabilities, allowing users to plot the identified fronts over GOES-16 satellite imagery.
