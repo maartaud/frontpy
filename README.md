@@ -56,13 +56,13 @@ config = {
     "lon_min": -90,                 # Minimum longitude for the analysis area (degrees, range: -180 to 180) - float
     "model_name": "GFS",            # Name of the model to be used (currently only GFS 0.25 Degree Global Forecast 0.25 data is supported) - string
     "pressure": 850,                # [Default: 850] Atmospheric pressure level (hPa) at which front identification is performed - int
-    "thetaw_thresh": 3.0,           # [Default: 3.0] Threshold for wet-bulb temperature (Celsius) for front identification -  float
+    "thetaw_thresh": 3.0,           # [Default: 3.0] Threshold for the magnitude of the gradient of potential wet-bulb temperature (K/100km) for front identification -  float
     "vf_thresh": 1.0,               # [Default: 1.0] Threshold for wind velocity (m/s) for front classification as cold or warm front - float
     "smooth_sigma": 0.5,            # [Default: 0.5] Smoothing parameter (sigma) for Gaussian filtering - float
     "line_or_area": "area",         # Type of representation for the fronts (line or area) - string
     "min_points": 4,                # [Default: 4] Minimum number of frontal points required for a valid frontal line - int
     "min_length": 500.0,            # [Default: 500.0] Minimum length (km) for the frontal line to be considered - float
-    "min_area": 5000.0,             # [Default: 5000.0] Minimum area (km²) for the frontal line to be considered - float
+    "min_area": 5000.0,             # [Default: 5000.0] Minimum area (km²) for the frontal zone to be considered - float
     "frame_rate": 3.0,              # [Default: 3.0] Frame rate (frames per second) for the generated animation; higher rates result in a faster animation - float
     "output_directory_fronts": "path_to_your_chosen_output_directory"   # Path to your output directory
 }
