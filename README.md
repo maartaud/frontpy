@@ -36,13 +36,13 @@ pip install frontpy
 
 To use FrontPy for detecting and analyzing atmospheric fronts, follow these steps:
 
-1. **Import the main function** from the package:
+**1. Import the main function** from the package:
 
 ```python
 from frontpy import main, plot_results
 ```
 
-2. **Set up the parameters required for downloading the data, calculating the Thermal Front Parameter (TFP), detecting cold and warm fronts, and final visualization**. 
+**2. Set up the parameters required for downloading the data, calculating the Thermal Front Parameter (TFP), detecting cold and warm fronts, and final visualization**. 
 
 The parameters must be provided in a dictionary, like the following:
 
@@ -73,7 +73,7 @@ Currently, the default values have only been tested for the Southern Hemisphere.
 **Note:** Be carefull with the amount of smoothing applied to the data. It is recommended to use the default value (0.5).
 
 
-3. **Call the main function**:
+**3. Call the main function**:
 
 The *main* function will return two dataframes: one for cold fronts and one for warm fronts. Both dataframes will be saved in CSV format inside your output directory. 
 
@@ -83,7 +83,7 @@ So, you can call the main function like this:
 cold_fronts, warm_fronts = main(config)
 ```
 
-4. **Plot the images and generate an animation**:
+**4. Plot the images and generate an animation**:
 
 Lastly, you can plot the results and generate an animation using the *plot_results* function. The images and animation will be saved in your output directory.
 
