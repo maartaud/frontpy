@@ -14,11 +14,11 @@ First, you should create a new environment with the specific version of Python a
 conda create -n your_environment_name python=3.9.15 gdal=3.3.3 poppler=21.09 -c conda-forge
 ```
 
-Replace *your_environment_name* with your desired name for the environment. The conda will create an isolated environment with Python 3.9.15 and the gdal and poppler libraries, which are necessary for the functionality of FrontPy. This will ensure that FrontPy will run smoothly.
+Replace *your_environment_name* with your desired name for the environment. The conda will create an isolated environment with Python 3.9.15 and the gdal and poppler libraries, which are necessary for the functionality of FrontPy. Now, FrontPy will probably run smoothly without any errors.
 
 ### Step 2: Activate your new Conda environment
 
-Once the environment is created, activate it with the following command:
+Once the environment is created, activate it using the command:
 
 ```bash
 conda activate your_environment_name
@@ -34,7 +34,7 @@ pip install frontpy
 
 ## Usage
 
-To use FrontPy for detecting and analyzing atmospheric fronts, follow these steps:
+To use FrontPy, follow these steps:
 
 **Step 1: Import the main and plot_results functions from the package**:
 
@@ -44,7 +44,7 @@ from frontpy import main, plot_results
 
 **Step 2: Set up the parameters required for downloading the data, calculating the Thermal Front Parameter (TFP), detecting cold and warm fronts, and final visualization**. 
 
-The parameters must be provided in a dictionary, like the following:
+The parameters must be provided in a dictionary, like this:
 
 ```python
 config = {
@@ -70,9 +70,6 @@ config = {
 
 Currently, the default values have only been tested for the Southern Hemisphere.
 
-**Note:** Be carefull with the amount of smoothing applied to the data. It is recommended to use the default value (0.5).
-
-
 **Step 3: Call the main function**:
 
 The *main* function will return two Pandas dataframes: one for cold fronts and one for warm fronts.
@@ -85,7 +82,7 @@ cold_fronts, warm_fronts = main(config)
 
 **Step 4: Plot the images and generate an animation**:
 
-Lastly, you can plot the results and generate an animation using the *plot_results* function. The images and animation will be saved in your output directory.
+Lastly, you can plot the results and generate an animation (GIF) using the *plot_results* function. The images and animation will be saved in your output directory.
 
 ```    
 plot_results(cold_fronts, warm_fronts, config)
@@ -93,7 +90,7 @@ plot_results(cold_fronts, warm_fronts, config)
 
 ### Command Line Interface (CLI)
 
-FrontPy also supports command-line execution through the *cli.py* file. This allows users to specify parameters for analysis and visualization directly from the command line.
+FrontPy also supports command-line execution through the *cli.py* file and the *fronts* function. This allows users to specify the parameters directly from the command line.
 
 To run FrontPy using the CLI, execute the following command in your terminal (without the <>):
 
@@ -101,7 +98,7 @@ To run FrontPy using the CLI, execute the following command in your terminal (wi
 fronts <start_date> <end_date> <lat_max> <lat_min> <lon_max> <lon_min> <line_or_area> <output_directory_fronts>
 ```
 
-The above arguments are mandatory and must be provided in string format and in the specified order. Optional arguments can also be included using the following prefixes before the values of your choice:
+The above arguments are mandatory and must be provided in string format (in quotes) and in the specified order. Optional arguments can also be included using the following prefixes before the values of your choice:
 
 - `--model-name`
 - `--pressure`
