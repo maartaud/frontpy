@@ -33,12 +33,12 @@ def run(
     # Optional arguments
     model_name: str = typer.Option("GFS", help="Name of the model to be used (currently only GFS 0.25 Degree Global 0.25 data for tests is supported)"),
     pressure: str = typer.Option(850, help="Atmospheric pressure level (hPa) at which front identification is performed"),
-    thetaw_thresh: str = typer.Option(3.0, help="Threshold for wet-bulb temperature (Celsius) for front identification"),
+    thetaw_thresh: str = typer.Option(3.0, help="Threshold for the magnitude of the gradient of potential wet-bulb temperature (K/100km) for front identification"),
     vf_thresh: str = typer.Option(1.0, help="Threshold for wind velocity (m/s) for front classification as cold or warm front"),
     smooth_sigma: str = typer.Option(0.5, help="Smoothing parameter (sigma) for Gaussian filtering"),
     min_points: str = typer.Option(4, help="Minimum number of frontal points required for a valid frontal line"),
     min_length: str = typer.Option(500, help="Minimum length (km) for the frontal line to be considered"),
-    min_area: str = typer.Option(5000, help="Minimum area (km²) that a front must occupy to be considered"),
+    min_area: str = typer.Option(5000, help="Minimum area (km²) that a frontal zone must occupy to be considered"),
     frame_rate: str = typer.Option(3, help="Frame rate (frames per second) for the animation; higher rates result in a faster animation")
 ):
     """This is the CLI for the identification of atmospheric fronts from FrontPy package, allowing users to specify parameters for analysis and visualization directly from the command line."""

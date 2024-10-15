@@ -1,7 +1,7 @@
 Metadata-Version: 2.1
 Name: frontpy
-Version: 0.1.6
-Summary: FrontPy is a Python package designed for the detection and analysis of atmospheric fronts. It computes thermal front parameters (TFP) using wet-bulb temperature at 850 hPa to identify cold and warm fronts. The package also includes visualization capabilities, allowing users to plot identified fronts over GOES-16 satellite imagery.
+Version: 0.1.11
+Summary: FrontPy is a Python package designed for the detection and analysis of atmospheric fronts. It uses the Thermal Front Parameter (TFP) method to identify cold and warm fronts. The package also includes visualization capabilities, allowing users to plot the identified fronts over GOES-16 satellite imagery.
 Author-email: Marcelo Souza <marcelo.rodriso@gmail.com>
 Keywords: fronts,tfp,thermal front parameter,meteorology
 Classifier: Development Status :: 4 - Beta
@@ -32,7 +32,7 @@ Requires-Dist: xarray>=2024.7.0
 
 # FrontPy
 
-FrontPy is a Python package designed for the detection and analysis of atmospheric fronts. It uses the Thermal Front Parameter (TFP) method to identify cold and warm fronts. The package also includes visualization capabilities, allowing users to plot the identified fronts over GOES-16 satellite imagery.
+FrontPy is a Python package designed for the detection and analysis of atmospheric fronts. It uses the Thermal Front Parameter (TFP) method to identify cold and warm fronts. The package also includes visualization capabilities, allowing users to plot the identified fronts over GOES-16 East satellite imagery.
 
 Currently, only analysis and forecast data from the GFS 0.25 Degree Global Forecast model are supported.
 
@@ -46,11 +46,11 @@ First, you should create a new environment with the specific version of Python a
 conda create -n your_environment_name python=3.9.15 gdal=3.3.3 poppler=21.09 -c conda-forge
 ```
 
-Replace *your_environment_name* with your desired name for the environment. The conda will create an isolated environment with Python 3.9.15 and the gdal and poppler libraries, which are necessary for the functionality of FrontPy. This will ensure that FrontPy will run smoothly.
+Replace *your_environment_name* with your desired name for the environment. The conda will create an isolated environment with Python 3.9.15 and the gdal and poppler libraries, which are necessary for the functionality of FrontPy. Now, FrontPy will probably run smoothly without any errors.
 
 ### Step 2: Activate your new Conda environment
 
-Once the environment is created, activate it with the following command:
+Once the environment is created, activate it using the command:
 
 ```bash
 conda activate your_environment_name
@@ -66,7 +66,7 @@ pip install frontpy
 
 ## Usage
 
-To use FrontPy for detecting and analyzing atmospheric fronts, follow these steps:
+To use FrontPy, follow these steps:
 
 **Step 1: Import the main and plot_results functions from the package**:
 
@@ -76,7 +76,7 @@ from frontpy import main, plot_results
 
 **Step 2: Set up the parameters required for downloading the data, calculating the Thermal Front Parameter (TFP), detecting cold and warm fronts, and final visualization**. 
 
-The parameters must be provided in a dictionary, like the following:
+The parameters must be provided in a dictionary, like this:
 
 ```python
 config = {
@@ -88,22 +88,19 @@ config = {
     "lon_min": -90,                 # Minimum longitude for the analysis area (degrees, range: -180 to 180) - float
     "model_name": "GFS",            # Name of the model to be used (currently only GFS 0.25 Degree Global Forecast 0.25 data is supported) - string
     "pressure": 850,                # [Default: 850] Atmospheric pressure level (hPa) at which front identification is performed - int
-    "thetaw_thresh": 3.0,           # [Default: 3.0] Threshold for wet-bulb temperature (Celsius) for front identification -  float
+    "thetaw_thresh": 3.0,           # [Default: 3.0] Threshold for the magnitude of the gradient of potential wet-bulb temperature (K/100km) for front identification -  float
     "vf_thresh": 1.0,               # [Default: 1.0] Threshold for wind velocity (m/s) for front classification as cold or warm front - float
     "smooth_sigma": 0.5,            # [Default: 0.5] Smoothing parameter (sigma) for Gaussian filtering - float
     "line_or_area": "area",         # Type of representation for the fronts (line or area) - string
     "min_points": 4,                # [Default: 4] Minimum number of frontal points required for a valid frontal line - int
     "min_length": 500.0,            # [Default: 500.0] Minimum length (km) for the frontal line to be considered - float
-    "min_area": 5000.0,             # [Default: 5000.0] Minimum area (km²) for the frontal line to be considered - float
+    "min_area": 5000.0,             # [Default: 5000.0] Minimum area (km²) for the frontal zone to be considered - float
     "frame_rate": 3.0,              # [Default: 3.0] Frame rate (frames per second) for the generated animation; higher rates result in a faster animation - float
     "output_directory_fronts": "path_to_your_chosen_output_directory"   # Path to your output directory
 }
 ```
 
 Currently, the default values have only been tested for the Southern Hemisphere.
-
-**Note:** Be carefull with the amount of smoothing applied to the data. It is recommended to use the default value (0.5).
-
 
 **Step 3: Call the main function**:
 
@@ -117,15 +114,17 @@ cold_fronts, warm_fronts = main(config)
 
 **Step 4: Plot the images and generate an animation**:
 
-Lastly, you can plot the results and generate an animation using the *plot_results* function. The images and animation will be saved in your output directory.
+Lastly, you can plot the results and generate an animation (GIF) using the *plot_results* function. The images and animation will be saved in your output directory.
 
 ```    
 plot_results(cold_fronts, warm_fronts, config)
 ```
 
+**Obs**: For now, it is only possible to generate images within the coverage area of GOES-16 East.
+
 ### Command Line Interface (CLI)
 
-FrontPy also supports command-line execution through the *cli.py* file. This allows users to specify parameters for analysis and visualization directly from the command line.
+FrontPy also supports command-line execution through the *cli.py* file and the *fronts* function. This allows users to specify the parameters directly from the command line.
 
 To run FrontPy using the CLI, execute the following command in your terminal (without the <>):
 
@@ -133,7 +132,7 @@ To run FrontPy using the CLI, execute the following command in your terminal (wi
 fronts <start_date> <end_date> <lat_max> <lat_min> <lon_max> <lon_min> <line_or_area> <output_directory_fronts>
 ```
 
-The above arguments are mandatory and must be provided in string format and in the specified order. Optional arguments can also be included using the following prefixes before the values of your choice:
+The above arguments are mandatory and must be provided in string format (in quotes) and in the specified order. Optional arguments can also be included using the following prefixes before the values of your choice:
 
 - `--model-name`
 - `--pressure`
