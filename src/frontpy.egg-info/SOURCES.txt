@@ -2,6 +2,16 @@ LICENSE
 MANIFEST.in
 README.md
 pyproject.toml
+examples/fronts_area.gif
+examples/fronts_satellite_area_2024101200.png
+examples/fronts_satellite_area_2024101203.png
+examples/fronts_satellite_area_2024101206.png
+examples/fronts_satellite_area_2024101209.png
+examples/fronts_satellite_area_2024101212.png
+examples/fronts_satellite_area_2024101215.png
+examples/fronts_satellite_area_2024101218.png
+examples/fronts_satellite_area_2024101221.png
+examples/fronts_satellite_area_2024101300.png
 examples/test.py
 src/frontpy/__init__.py
 src/frontpy/calc_tfp.py

@@ -17,7 +17,7 @@ config = {
     "smooth_sigma": 0.5,
     "min_area": 5000,
     "frame_rate": 2,
-    "output_directory_fronts": "/home/marcelo/Imagens/teste/"
+    "output_directory_fronts": "your_output_directory"
     }
     
 ff, fq = main(config)
