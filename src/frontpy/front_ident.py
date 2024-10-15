@@ -13,7 +13,6 @@ import warnings
 plt.switch_backend('agg')
 warnings.filterwarnings("ignore", category=DeprecationWarning)
 gdal.PushErrorHandler('CPLQuietErrorHandler')
-gdal.UseExceptions()
 
 def create_paths(f):
     paths_by_layer = []

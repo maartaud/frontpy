@@ -20,7 +20,6 @@ rcParams['font.sans-serif'] = ['DejaVu Sans']
 
 warnings.filterwarnings("ignore", category=DeprecationWarning)
 gdal.PushErrorHandler('CPLQuietErrorHandler')
-gdal.UseExceptions()
 
 root = Path(__file__).resolve().parents[0]  
 data_folder = root / 'resources'
