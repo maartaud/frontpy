@@ -132,46 +132,46 @@ def open_tfp(tfp_file):
     return tfp, mag_thetaw, vf
 
 def tfp_masks(tfp,mag_thetaw,vf,thetaw_thresh,vf_thresh):
-    ffria = tfp.where((mag_thetaw>=thetaw_thresh)&(vf>=vf_thresh))
-    fquente = tfp.where((mag_thetaw>=thetaw_thresh)&(vf<=-vf_thresh))
-    return ffria, fquente
+    fcold = tfp.where((mag_thetaw>=thetaw_thresh)&(vf>=vf_thresh))
+    fwarm = tfp.where((mag_thetaw>=thetaw_thresh)&(vf<=-vf_thresh))
+    return fcold, fwarm
 
-def front_identification(tfp_fria, tfp_quente, line_or_area, min_points, min_length, output_directory_fronts):
+def front_identification(tfp_cold, tfp_warm, line_or_area, min_points, min_length, output_directory_fronts):
     all_dfs_contour = []
     all_dfs_contourf = []
 
-    for t in tfp_fria.time:
-        tfp_fria_2 = tfp_fria.sel(time=t)
-        tfp_quente_2 = tfp_quente.sel(time=t)
+    for t in tfp_cold.time:
+        tfp_cold_2 = tfp_cold.sel(time=t)
+        tfp_warm_2 = tfp_warm.sel(time=t)
 
-        lon2 = tfp_fria_2.lon
-        lat2 = tfp_fria_2.lat
-        tfp_fria_3, lon3 = add_cyclic_point(tfp_fria_2, coord=lon2)
+        lon2 = tfp_cold_2.lon
+        lat2 = tfp_cold_2.lat
+        tfp_cold_3, lon3 = add_cyclic_point(tfp_cold_2, coord=lon2)
 
-        f_contour = plt.contour(lon3, lat2, tfp_fria_3, levels=1, colors="blue")
-        f_contourf = plt.contourf(lon3, lat2, tfp_fria_3, levels=1, colors="blue", alpha=0.5)
+        f_contour = plt.contour(lon3, lat2, tfp_cold_3, levels=1, colors="blue")
+        f_contourf = plt.contourf(lon3, lat2, tfp_cold_3, levels=1, colors="blue", alpha=0.5)
 
-        lon4 = tfp_quente_2.lon
-        lat4 = tfp_quente_2.lat
-        tfp_quente_3, lon5 = add_cyclic_point(tfp_quente_2, coord=lon4)
+        lon4 = tfp_warm_2.lon
+        lat4 = tfp_warm_2.lat
+        tfp_warm_3, lon5 = add_cyclic_point(tfp_warm_2, coord=lon4)
 
-        f2_contour = plt.contour(lon5, lat4, tfp_quente_3, levels=1, colors="red")
-        f2_contourf = plt.contourf(lon5, lat4, tfp_quente_3, levels=1, colors="red", alpha=0.5)
+        f2_contour = plt.contour(lon5, lat4, tfp_warm_3, levels=1, colors="red")
+        f2_contourf = plt.contourf(lon5, lat4, tfp_warm_3, levels=1, colors="red", alpha=0.5)
 
-        ffrias_paths_contour = create_paths(f_contour)
-        ffrias_paths_contourf = create_paths(f_contourf)
+        fcolds_paths_contour = create_paths(f_contour)
+        fcolds_paths_contourf = create_paths(f_contourf)
 
-        fquentes_paths_contour = create_paths(f2_contour)
-        fquentes_paths_contourf = create_paths(f2_contourf)
+        fwarms_paths_contour = create_paths(f2_contour)
+        fwarms_paths_contourf = create_paths(f2_contourf)
 
-        df_paths_ffrias_contour = create_paths_dataframe(ffrias_paths_contour, t, "fria")
-        df_paths_ffrias_contourf = create_paths_dataframe(ffrias_paths_contourf, t, "fria")
+        df_paths_fcolds_contour = create_paths_dataframe(fcolds_paths_contour, t, "cold")
+        df_paths_fcolds_contourf = create_paths_dataframe(fcolds_paths_contourf, t, "cold")
 
-        df_paths_fquentes_contour = create_paths_dataframe(fquentes_paths_contour, t, "quente")
-        df_paths_fquentes_contourf = create_paths_dataframe(fquentes_paths_contourf, t, "quente")
+        df_paths_fwarms_contour = create_paths_dataframe(fwarms_paths_contour, t, "warm")
+        df_paths_fwarms_contourf = create_paths_dataframe(fwarms_paths_contourf, t, "warm")
 
-        all_dfs_contour.append(pd.concat([df_paths_ffrias_contour, df_paths_fquentes_contour], axis=0).reset_index(drop=True))
-        all_dfs_contourf.append(pd.concat([df_paths_ffrias_contourf, df_paths_fquentes_contourf], axis=0).reset_index(drop=True))
+        all_dfs_contour.append(pd.concat([df_paths_fcolds_contour, df_paths_fwarms_contour], axis=0).reset_index(drop=True))
+        all_dfs_contourf.append(pd.concat([df_paths_fcolds_contourf, df_paths_fwarms_contourf], axis=0).reset_index(drop=True))
 
         plt.close()
 
@@ -183,8 +183,8 @@ def front_identification(tfp_fria, tfp_quente, line_or_area, min_points, min_len
 
     output_directory_fronts = Path2(output_directory_fronts)
 
-    output_filepath1 = output_directory_fronts / "frentes_contour.csv"
-    output_filepath2 = output_directory_fronts / "frentes_contourf.csv"
+    output_filepath1 = output_directory_fronts / "frontal_lines.csv"
+    output_filepath2 = output_directory_fronts / "frontal_areas.csv"
     
     df_contour.to_csv(output_filepath1,index=False)
     df_contourf.to_csv(output_filepath2,index=False)
@@ -193,26 +193,26 @@ def front_identification(tfp_fria, tfp_quente, line_or_area, min_points, min_len
     fqs = []
     
     for t in df_contour.data.unique():
-        frentes = df_contour[df_contour.data==t]
+        fronts = df_contour[df_contour.data==t]
         if line_or_area == "line":
             
-            ff = frentes[frentes.tipo=="fria"]
+            ff = fronts[fronts.tipo=="cold"]
             ff = ff.groupby('id').filter(lambda x: len(x) >= min_points)
             ff = filter_by_length(ff, min_length)
             ffs.append(ff)
             
-            fq = frentes[frentes.tipo=="quente"]
+            fq = fronts[fronts.tipo=="warm"]
             fq = fq.groupby('id').filter(lambda x: len(x) >= min_points)            
             fq = filter_by_length(fq, min_length)
             fqs.append(fq)
 
         elif line_or_area == "area":
-            frentes = df_contourf[df_contourf.data==t]
-            ff = frentes[frentes.tipo=="fria"]
+            fronts = df_contourf[df_contourf.data==t]
+            ff = fronts[fronts.tipo=="cold"]
             ff = ff.groupby('id').filter(lambda x: len(x) >= min_points)
             ffs.append(ff)
 
-            fq = frentes[frentes.tipo=="quente"]
+            fq = fronts[fronts.tipo=="warm"]
             fq = fq.groupby('id').filter(lambda x: len(x) >= min_points)
             fqs.append(fq)
 

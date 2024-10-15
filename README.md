@@ -75,7 +75,7 @@ Currently, the default values have only been tested for the Southern Hemisphere.
 
 **Step 3: Call the main function**:
 
-The *main* function will return two dataframes: one for cold fronts and one for warm fronts. Both dataframes will be saved in CSV format inside your output directory. 
+The *main* function will return two Pandas dataframes: one for cold fronts and one for warm fronts.
 
 So, you can call the main function like this:
 

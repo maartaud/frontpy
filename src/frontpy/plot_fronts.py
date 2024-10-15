@@ -45,14 +45,14 @@ def plot_fronts_satellite(ff, fq, line_or_area, lat_max, lat_min, lon_max, lon_m
     input_directory.mkdir(parents=True, exist_ok=True) 
 
 
-    times_frentes = np.unique(ff.data.values)
+    times_fronts = np.unique(ff.data.values)
     times_images = pd.to_datetime(ff.data).dt.strftime('%Y%m%d%H').unique()
 
     extent = [lon_min, lat_min, lon_max, lat_max]
     img_extent = [extent[0], extent[2], extent[1], extent[3]]
 
     k = 0
-    for i,j in zip(times_images,times_frentes):
+    for i,j in zip(times_images,times_fronts):
         yyyymmddhhmn = i + '00'
         file_ir = download_CMI(yyyymmddhhmn, 13, inputdata)
         var = 'CMI'
@@ -91,40 +91,40 @@ def plot_fronts_satellite(ff, fq, line_or_area, lat_max, lat_min, lon_max, lon_m
 
         if line_or_area == "line":
             for id, track in ff2.groupby('id'):
-                lat_fria = track['lat'].values
-                lon_fria = track['lon'].values
+                lat_cold = track['lat'].values
+                lon_cold = track['lon'].values
 
-                if len(lat_fria) < 4 or len(lon_fria) < 4:
-                    print(f"Aviso: Não há pontos suficientes para interpolação para a frente fria id {id}.")
-                    ax.plot(lon_fria, lat_fria, color='blue', linewidth=3, transform=ccrs.Geodetic(), zorder=99)
+                if len(lat_cold) < 4 or len(lon_cold) < 4:
+                    print(f"Aviso: Não há pontos suficientes para interpolação para a frente cold id {id}.")
+                    ax.plot(lon_cold, lat_cold, color='blue', linewidth=3, transform=ccrs.Geodetic(), zorder=99)
                     continue
 
-                spline_lat = UnivariateSpline(np.arange(len(lat_fria)), lat_fria, s=1, k=2)
-                spline_lon = UnivariateSpline(np.arange(len(lon_fria)), lon_fria, s=1, k=2)
+                spline_lat = UnivariateSpline(np.arange(len(lat_cold)), lat_cold, s=1, k=2)
+                spline_lon = UnivariateSpline(np.arange(len(lon_cold)), lon_cold, s=1, k=2)
 
-                new_indices = np.linspace(0, len(lat_fria) - 1, num=100)
-                lat_fria_smooth = spline_lat(new_indices)
-                lon_fria_smooth = spline_lon(new_indices)
+                new_indices = np.linspace(0, len(lat_cold) - 1, num=100)
+                lat_cold_smooth = spline_lat(new_indices)
+                lon_cold_smooth = spline_lon(new_indices)
 
-                ax.plot(lon_fria_smooth, lat_fria_smooth, color='blue', linewidth=3, transform=ccrs.Geodetic(), zorder=99)
+                ax.plot(lon_cold_smooth, lat_cold_smooth, color='blue', linewidth=3, transform=ccrs.Geodetic(), zorder=99)
 
             for id, track in fq2.groupby('id'):
-                lat_quente = track['lat'].values
-                lon_quente = track['lon'].values
+                lat_warm = track['lat'].values
+                lon_warm = track['lon'].values
 
-                if len(lat_quente) < 4 or len(lon_quente) < 4:
-                    print(f"Aviso: Não há pontos suficientes para interpolação para a frente quente id {id}.")
-                    ax.plot(lon_quente, lat_quente, color='red', linewidth=3, transform=ccrs.Geodetic(), zorder=99)
+                if len(lat_warm) < 4 or len(lon_warm) < 4:
+                    print(f"Aviso: Não há pontos suficientes para interpolação para a frente warm id {id}.")
+                    ax.plot(lon_warm, lat_warm, color='red', linewidth=3, transform=ccrs.Geodetic(), zorder=99)
                     continue
 
-                spline_lat = UnivariateSpline(np.arange(len(lat_quente)), lat_quente, s=1, k=2)
-                spline_lon = UnivariateSpline(np.arange(len(lon_quente)), lon_quente, s=1, k=2)
+                spline_lat = UnivariateSpline(np.arange(len(lat_warm)), lat_warm, s=1, k=2)
+                spline_lon = UnivariateSpline(np.arange(len(lon_warm)), lon_warm, s=1, k=2)
 
-                new_indices = np.linspace(0, len(lat_quente) - 1, num=100)
-                lat_quente_smooth = spline_lat(new_indices)
-                lon_quente_smooth = spline_lon(new_indices)
+                new_indices = np.linspace(0, len(lat_warm) - 1, num=100)
+                lat_warm_smooth = spline_lat(new_indices)
+                lon_warm_smooth = spline_lon(new_indices)
 
-                ax.plot(lon_quente_smooth, lat_quente_smooth, color='red', linewidth=3, transform=ccrs.Geodetic(), zorder=99)
+                ax.plot(lon_warm_smooth, lat_warm_smooth, color='red', linewidth=3, transform=ccrs.Geodetic(), zorder=99)
 
         elif line_or_area == "area":
             ff2_area = calcular_area(ff2)
@@ -134,16 +134,16 @@ def plot_fronts_satellite(ff, fq, line_or_area, lat_max, lat_min, lon_max, lon_m
             fq2_filtered = fq2_area[fq2_area.area_km2>=min_area]
 
             for id, track in ff2_filtered.groupby('id'):
-                lat_fria = track['lat'].values
-                lon_fria = track['lon'].values
+                lat_cold = track['lat'].values
+                lon_cold = track['lon'].values
 
-                ax.fill(lon_fria, lat_fria, 'blue', alpha=1, transform=ccrs.PlateCarree(), zorder=99)
+                ax.fill(lon_cold, lat_cold, 'blue', alpha=1, transform=ccrs.PlateCarree(), zorder=99)
 
             for id, track in fq2_filtered.groupby('id'):
-                lat_quente = track['lat'].values
-                lon_quente = track['lon'].values
+                lat_warm = track['lat'].values
+                lon_warm = track['lon'].values
 
-                ax.fill(lon_quente, lat_quente, 'red', alpha=1, transform=ccrs.PlateCarree(), zorder=99)
+                ax.fill(lon_warm, lat_warm, 'red', alpha=1, transform=ccrs.PlateCarree(), zorder=99)
 
         else:
             print("Error: area_or_line only accepts 'area' or 'line'.")

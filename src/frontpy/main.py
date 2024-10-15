@@ -20,8 +20,8 @@ def main(config):
     
         tfp_filepath = Path(config['output_directory_fronts']) / f"tfp_files/tfp_{config['model_name']}.nc"
         tfp, mag_thetaw, vf = open_tfp(tfp_filepath)
-        tfp_fria, tfp_quente = tfp_masks(tfp, mag_thetaw, vf, config['thetaw_thresh'], config['vf_thresh'])
-        ff, fq = front_identification(tfp_fria, tfp_quente, config['line_or_area'], config['min_points'], config['min_length'], config['output_directory_fronts'])
+        tfp_cold, tfp_warm = tfp_masks(tfp, mag_thetaw, vf, config['thetaw_thresh'], config['vf_thresh'])
+        ff, fq = front_identification(tfp_cold, tfp_warm, config['line_or_area'], config['min_points'], config['min_length'], config['output_directory_fronts'])
     else:
         raise ValueError("Currently only GFS 0.25 Degree Global Forecast 0.25 data is supported.")
     
