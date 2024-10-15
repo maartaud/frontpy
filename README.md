@@ -82,7 +82,7 @@ So, you can call the main function like this:
 
 Lastly, you can plot the results and generate an animation using the *plot_results* function. The images and animation will be saved in your output directory.
 
-    ```    
+    ```bash
     plot_results(cold_fronts, warm_fronts, config)
     ```
 
