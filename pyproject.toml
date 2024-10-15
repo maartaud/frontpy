@@ -39,6 +39,9 @@ dependencies = [
     "xarray>=2024.7.0"
 ]
 
+[project.urls]
+Repository = "https://github.com/maartaud/frontpy"
+
 [project.scripts]
 fronts = "frontpy.cli:main_cli"
 
