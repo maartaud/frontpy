@@ -2,6 +2,8 @@
 
 FrontPy is a Python package designed for the detection and analysis of atmospheric fronts. It uses the Thermal Front Parameter (TFP) method to identify cold and warm fronts. The package also includes visualization capabilities, allowing users to plot the identified fronts over GOES-16 satellite imagery.
 
+Currently, only analysis and forecast data from the GFS 0.25 Degree Global Forecast model are supported.
+
 ## Installation of FrontPy
 
 ### Step 1: Create a new Conda environment
@@ -40,9 +42,9 @@ To use FrontPy for detecting and analyzing atmospheric fronts, follow these step
     from frontpy import main, plot_results
     ```
 
-2. **Set up the parameters needed for detecting the cold and warm fronts inside a dictionary**. 
+2. **Set up the parameters required for downloading the data, calculating the Thermal Front Parameter (TFP), detecting cold and warm fronts, and final visualization**. 
 
-For example:
+The parameters must be provided in a dictionary, like the following:
 
     ```python
     config = {
@@ -68,11 +70,17 @@ For example:
 
 3. **Call the main function**:
 
+The *main* function will return two dataframes: one for cold fronts and one for warm fronts. Both dataframes will be saved in CSV format inside your output directory. 
+
+So, you can call the main function like this:
+
     ```python
     cold_fronts, warm_fronts = main(config)
     ```
 
 4. **Plot the images and generate an animation**:
+
+Lastly, you can plot the results and generate an animation using the *plot_results* function. The images and animation will be saved in your output directory.
 
     ```python    
     plot_results(cold_fronts, warm_fronts, config)
