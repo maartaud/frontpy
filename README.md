@@ -88,9 +88,9 @@ plot_results(cold_fronts, warm_fronts, config)
 
 ### Command Line Interface (CLI)
 
-FrontPy also supports command-line execution through the cli.py file. This allows users to specify parameters for analysis and visualization directly from the command line.
+FrontPy also supports command-line execution through the *cli.py* file. This allows users to specify parameters for analysis and visualization directly from the command line.
 
-To run FrontPy using the CLI, execute the following command in your terminal:
+To run FrontPy using the CLI, execute the following command in your terminal (without the <>):
 
 ```bash
 fronts <start_date> <end_date> <lat_max> <lat_min> <lon_max> <lon_min> <line_or_area> <output_directory_fronts>
