@@ -1,19 +1,21 @@
+import warnings
+from pathlib import Path
+
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 from matplotlib import cm
 from matplotlib.colors import ListedColormap
+from matplotlib import rcParams
 from osgeo import gdal
-from .cpt_convert import loadCPT 
 import cartopy.crs as ccrs
 import cartopy.feature as cfeature
-from .utilities import download_CMI, reproject
 from netCDF4 import Dataset
 from scipy.interpolate import UnivariateSpline
-from .front_ident import calcular_area
-import warnings
-from matplotlib import rcParams
-from pathlib import Path
+
+from .utils import get_CMI_GOES16, reproject_img, read_color_palette
+from .front_ident import calc_area
+
 plt.switch_backend('agg')
 rcParams['font.family'] = 'serif'
 rcParams['font.sans-serif'] = ['DejaVu Sans']
@@ -21,13 +23,13 @@ rcParams['font.sans-serif'] = ['DejaVu Sans']
 warnings.filterwarnings("ignore", category=DeprecationWarning)
 gdal.PushErrorHandler('CPLQuietErrorHandler')
 
+
 root = Path(__file__).resolve().parents[0]  
 data_folder = root / 'resources'
-cpt_path = data_folder / 'IR4AVHRR6.cpt'
-cpt = loadCPT(cpt_path)
+palette_path = data_folder / 'IR_colormap.cpt'
+palette = read_color_palette(palette_path)
 
-cmap = cm.colors.LinearSegmentedColormap('cpt', cpt)
-
+cmap = cm.colors.LinearSegmentedColormap('cpt', palette)
 colors_list_hex = [cm.colors.rgb2hex(cmap(i / 255)) for i in range(256)]
 new_colors = colors_list_hex[19:]
 cmap = ListedColormap(new_colors)
@@ -35,8 +37,8 @@ cmap = ListedColormap(new_colors)
 
 def plot_fronts_satellite(ff, fq, line_or_area, lat_max, lat_min, lon_max, lon_min, min_area, output_directory_fronts):
 
-    inputdata = Path(output_directory_fronts) / 'samples'
-    outputdata = Path(output_directory_fronts) / 'output'
+    inputdata = Path(output_directory_fronts) / 'originals'
+    outputdata = Path(output_directory_fronts) / 'finals'
     input_directory = Path(output_directory_fronts) / 'figures'
 
     inputdata.mkdir(parents=True, exist_ok=True)
@@ -52,10 +54,10 @@ def plot_fronts_satellite(ff, fq, line_or_area, lat_max, lat_min, lon_max, lon_m
 
     k = 0
     for i,j in zip(times_images,times_fronts):
-        yyyymmddhhmn = i + '00'
-        file_ir = download_CMI(yyyymmddhhmn, 13, inputdata)
+        time_img = i + '00'
+        file_CMI = get_CMI_GOES16(time_img, 13, inputdata)
         var = 'CMI'
-        img = gdal.Open(f'NETCDF:{inputdata}/{file_ir}.nc:' + var)
+        img = gdal.Open(f'NETCDF:{inputdata}/{file_CMI}.nc:' + var)
 
         metadata = img.GetMetadata()
         scale = float(metadata.get(var + '#scale_factor'))
@@ -63,15 +65,13 @@ def plot_fronts_satellite(ff, fq, line_or_area, lat_max, lat_min, lon_max, lon_m
         undef = float(metadata.get(var + '#_FillValue'))
 
         ds_cmi = img.ReadAsArray(0, 0, img.RasterXSize, img.RasterYSize).astype(float)
-
         ds_cmi = (ds_cmi * scale + offset) - 273.15
 
-        filename_ret = f'{outputdata}/IR_{yyyymmddhhmn}.nc'
-        reproject(filename_ret, img, ds_cmi, extent, undef)
+        filename_IR = f'{outputdata}/IR_{time_img}.nc'
+        reproject_img(filename_IR, img, ds_cmi, extent, undef)
 
-        file = Dataset(filename_ret)
-
-        data = file.variables['Band1'][:]
+        ds = Dataset(filename_IR)
+        ds2 = ds.variables['Band1'][:]
 
         #############################################################################################
 
@@ -83,7 +83,7 @@ def plot_fronts_satellite(ff, fq, line_or_area, lat_max, lat_min, lon_max, lon_m
         ax.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidths=1.2)
         ax.add_feature(cfeature.BORDERS.with_scale('50m'), linewidths=1.2)
         ax.add_feature(cfeature.STATES.with_scale('50m'), linewidths=0.5)
-        img1 = ax.imshow(data, origin='upper', vmin=-90, vmax=90, extent=img_extent, cmap=cmap, alpha=1.0)
+        img_plot = ax.imshow(ds2, origin='upper', vmin=-90, vmax=90, extent=img_extent, cmap=cmap, alpha=1.0)
 
         ff2 = ff[ff.data==j]
         fq2 = fq[fq.data==j]
@@ -126,8 +126,8 @@ def plot_fronts_satellite(ff, fq, line_or_area, lat_max, lat_min, lon_max, lon_m
                 ax.plot(lon_warm_smooth, lat_warm_smooth, color='red', linewidth=3, transform=ccrs.Geodetic(), zorder=99)
 
         elif line_or_area == "area":
-            ff2_area = calcular_area(ff2)
-            fq2_area = calcular_area(fq2)
+            ff2_area = calc_area(ff2)
+            fq2_area = calc_area(fq2)
 
             ff2_filtered = ff2_area[ff2_area.area_km2>=min_area]
             fq2_filtered = fq2_area[fq2_area.area_km2>=min_area]
@@ -152,7 +152,7 @@ def plot_fronts_satellite(ff, fq, line_or_area, lat_max, lat_min, lon_max, lon_m
                           ylocs=np.arange(-90, 90, 10), draw_labels=True)
         gl.top_labels = False
         gl.right_labels = False
-        cb = plt.colorbar(img1, extend='both', orientation='vertical',
+        cb = plt.colorbar(img_plot, extend='both', orientation='vertical',
                      pad=0.02, shrink=0.5)
         
         ticks = np.linspace(-90, 90, 10)

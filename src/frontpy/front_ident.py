@@ -4,7 +4,6 @@ import matplotlib.pyplot as plt
 from matplotlib.path import Path
 from pathlib import Path as Path2
 from osgeo import gdal
-
 from cartopy.util import add_cyclic_point
 from shapely.geometry import Polygon
 import geopandas as gpd
@@ -73,7 +72,7 @@ def generate_unique_ids(df):
     df.loc[:, 'id'] = df.groupby(['data', 'id']).ngroup() + 1
     return df
 
-def calcular_area(df):
+def calc_area(df):
     polygons = []
     for id, group in df.groupby('id'):
         polygon = Polygon(zip(group['lon'], group['lat']))
