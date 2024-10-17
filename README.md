@@ -140,6 +140,12 @@ fronts "2024-10-10 00" "2024-10-11 00" "20" "-60" "-20" "-90" "area" "/output_di
 fronts "2024-10-10 00" "2024-10-11 00" "20" "-60" "-20" "-90" "area" "/output_directory/" "both" --filepath "/path_to_my_netcdf_file.nc"
 ```
 
+Have fun working with all the different combinations of parameters and values!
+
+## Contributing
+
+Contributions are welcome! If you find any issues or have suggestions for improvements, please open an issue or submit a pull request.
+
 ## License
 
 This project is licensed under the Apache License 2.0. See the LICENSE file for more details.
