@@ -35,7 +35,7 @@ new_colors = colors_list_hex[19:]
 cmap = ListedColormap(new_colors)
 
 
-def plot_fronts_satellite(ff, fq, line_or_area, lat_max, lat_min, lon_max, lon_min, min_area, output_directory_fronts):
+def plot_fronts_satellite(model_name, ff, fq, line_or_area, lat_max, lat_min, lon_max, lon_min, min_area, output_directory_fronts):
 
     inputdata = Path(output_directory_fronts) / 'originals'
     outputdata = Path(output_directory_fronts) / 'finals'
@@ -166,7 +166,7 @@ def plot_fronts_satellite(ff, fq, line_or_area, lat_max, lat_min, lon_max, lon_m
 
         ax.set_title(formatted_date, loc='right', color='k', fontsize=12)
 
-        plt.savefig(f'{input_directory}/fronts_satellite_{line_or_area}_{i}.png', bbox_inches='tight',facecolor='white', dpi=200)
+        plt.savefig(f'{input_directory}/{model_name}_fronts_satellite_{line_or_area}_{i}.png', bbox_inches='tight',facecolor='white', dpi=200)
         print(f"**** Figure #{i} saved in: {input_directory} ****")
         plt.close()
         k += 1

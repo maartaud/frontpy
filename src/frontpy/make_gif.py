@@ -14,11 +14,11 @@ def clear_directory(directory):
                 shutil.rmtree(f)
 
 
-def gif(start_date, end_date, frame_rate, line_or_area, output_directory_fronts):
+def gif(model_name, start_date, end_date, frame_rate, line_or_area, output_directory_fronts):
     input_directory = os.path.join(output_directory_fronts,'figures')
     output_directory = os.path.join(output_directory_fronts,'figures/gif')
     temp_directory = os.path.join(output_directory_fronts,'figures/temp')
-    out_file_name = 'fronts'
+    out_file_name = f'{model_name}_fronts'
 
     start_date = datetime.strptime(start_date, '%Y-%m-%d %H')
     end_date = datetime.strptime(end_date, '%Y-%m-%d %H')
@@ -29,7 +29,7 @@ def gif(start_date, end_date, frame_rate, line_or_area, output_directory_fronts)
 
     clear_directory(temp_directory)
 
-    image_files = sorted(glob.glob(os.path.join(input_directory, f'fronts_satellite_{line_or_area}_*.png')))
+    image_files = sorted(glob.glob(os.path.join(input_directory, f'{model_name}_fronts_satellite_{line_or_area}_*.png')))
 
     for image in image_files:
         filename = os.path.basename(image)
@@ -43,9 +43,9 @@ def gif(start_date, end_date, frame_rate, line_or_area, output_directory_fronts)
     gif_file_path = os.path.join(output_directory, f'{out_file_name}_{line_or_area}.gif')
 
     ffmpeg_command = (
-        f'ffmpeg -framerate {frame_rate} -pattern_type glob -i "{temp_directory}/fronts_satellite_{line_or_area}_*.png" '
+        f'ffmpeg -framerate {frame_rate} -pattern_type glob -i "{temp_directory}/{model_name}_fronts_satellite_{line_or_area}_*.png" '
         f'-vf "fps={frame_rate},scale=640:-1:flags=lanczos,palettegen" -y palette.png && '
-        f'ffmpeg -framerate {frame_rate} -pattern_type glob -i "{temp_directory}/fronts_satellite_{line_or_area}_*.png" '
+        f'ffmpeg -framerate {frame_rate} -pattern_type glob -i "{temp_directory}/{model_name}_fronts_satellite_{line_or_area}_*.png" '
         f'-i palette.png -lavfi "fps={frame_rate},paletteuse" -y "{gif_file_path}"'
     )
 

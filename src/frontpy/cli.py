@@ -1,3 +1,4 @@
+import os
 import typer
 from enum import Enum
 from datetime import datetime
@@ -9,9 +10,14 @@ class LineOrArea(str, Enum):
     line = "line"
     area = "area"
 
+class Mode(str, Enum):
+    identify = "identify"
+    plot = "plot"
+    both = "both"
+
 def validate_date(date_str: str):
     try:
-        datetime.strptime(date_str, '%Y-%M-%d %H')
+        datetime.strptime(date_str, '%Y-%m-%d %H')
         return date_str
     except ValueError:
         raise typer.BadParameter("Date must be in the format YYYY-MM-DD HH")
@@ -29,9 +35,11 @@ def run(
     lon_min: str = typer.Argument(..., help="Minimum longitude for the analysis area (degrees, range: -180 to 180)"),
     line_or_area: LineOrArea = typer.Argument(..., help="Type of representation for the fronts (line or area)"),
     output_directory_fronts: str = typer.Argument(..., help="Path to your output directory"),
+    mode: Mode = typer.Argument(..., help="Choose which task to perform: 'identify', 'plot', or 'both'"),
     
     # Optional arguments
-    model_name: str = typer.Option("GFS", help="Name of the model to be used (currently only GFS 0.25 Degree Global 0.25 data for tests is supported)"),
+    model_name: str = typer.Option(None, help="(GFS, ERA5 or None for local file)"),
+    filepath: str = typer.Option(None, help="Path to the local NetCDF file containing u, v, specific humidity and temperature (required if model_name is None)"),
     pressure: str = typer.Option(850, help="Atmospheric pressure level (hPa) at which front identification is performed"),
     thetaw_thresh: str = typer.Option(3.0, help="Threshold for the magnitude of the gradient of potential wet-bulb temperature (K/100km) for front identification"),
     vf_thresh: str = typer.Option(1.0, help="Threshold for wind velocity (m/s) for front classification as cold or warm front"),
@@ -39,9 +47,14 @@ def run(
     min_points: str = typer.Option(4, help="Minimum number of frontal points required for a valid frontal line"),
     min_length: str = typer.Option(500, help="Minimum length (km) for the frontal line to be considered"),
     min_area: str = typer.Option(5000, help="Minimum area (km²) that a frontal zone must occupy to be considered"),
-    frame_rate: str = typer.Option(3, help="Frame rate (frames per second) for the animation; higher rates result in a faster animation")
+    frame_rate: str = typer.Option(3, help="Frame rate (frames per second) for the animation; higher rates result in a faster animation"),
+
+
 ):
     """This is the CLI for the identification of atmospheric fronts from FrontPy package, allowing users to specify parameters for analysis and visualization directly from the command line."""
+
+    if model_name is None and filepath is None:
+        raise typer.BadParameter("If model_name is None, a filepath to the local NetCDF file containing u, v, specific humidity and temperature must be provided.")
     
     config = {
         "start_date": start_date,
@@ -51,6 +64,7 @@ def run(
         "lon_max": float(lon_max),
         "lon_min": float(lon_min),
         "model_name": model_name,
+        "filepath": filepath,
         "pressure": int(pressure),
         "thetaw_thresh": float(thetaw_thresh),
         "vf_thresh": float(vf_thresh),
@@ -63,8 +77,22 @@ def run(
         "output_directory_fronts": output_directory_fronts
     }
 
-    ff, fq = main(config)
-    plot_results(ff, fq, config)
+    if mode == Mode.identify or mode == Mode.both:
+        ff, fq = main(config)
+        if mode == Mode.both:
+            plot_results(ff, fq, config)
+    elif mode == Mode.plot:
+        cold_fronts_path = os.path.join(config['output_directory_fronts'], "cold_fronts.csv")
+        warm_fronts_path = os.path.join(config['output_directory_fronts'], "warm_fronts.csv")
+        
+        if not os.path.exists(cold_fronts_path) or not os.path.exists(warm_fronts_path):
+            raise FileNotFoundError("The files containing the front dataframes (cold_fronts.csv and/or warm_fronts.csv) were not found in the specified directory. Please run the main function to generate both dataframes.")
+
+        import pandas as pd
+        ff = pd.read_csv(cold_fronts_path)
+        fq = pd.read_csv(warm_fronts_path)
+
+        plot_results(ff, fq, config)
 
 if __name__ == "__main__":
     main_cli()

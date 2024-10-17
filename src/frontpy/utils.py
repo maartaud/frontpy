@@ -1,5 +1,6 @@
 import os
 import numpy as np
+from pathlib import Path
 import colorsys
 import boto3
 from botocore import UNSIGNED
@@ -8,67 +9,56 @@ from datetime import datetime
 from osgeo import osr
 from osgeo import gdal
 
-def get_CMI_GOES16(yyyymmddhhmn, band, path_dest):
-    # Ensure the destination directory exists
-    os.makedirs(path_dest, exist_ok=True)
+def get_CMI_GOES16(yyyymmddhhmn, band, output_dir):
 
-    # Parse the input date once
-    date_time = datetime.strptime(yyyymmddhhmn, '%Y%m%d%H%M')
-    year = date_time.strftime('%Y')
-    day_of_year = date_time.strftime('%j')
-    hour = date_time.strftime('%H')
-    minute = date_time.strftime('%M')
+    os.makedirs(output_dir, exist_ok=True)
 
-    # AWS S3 repository information
-    bucket_name = 'noaa-goes16'
-    product_name = 'ABI-L2-CMIPF'
+    year = datetime.strptime(yyyymmddhhmn, '%Y%m%d%H%M').strftime('%Y')
+    day = datetime.strptime(yyyymmddhhmn, '%Y%m%d%H%M').strftime('%j')
+    hour = datetime.strptime(yyyymmddhhmn, '%Y%m%d%H%M').strftime('%H')
+    min = datetime.strptime(yyyymmddhhmn, '%Y%m%d%H%M').strftime('%M')
+    
 
-    # Prefix for the file structure on S3
-    prefix = f'{product_name}/{year}/{day_of_year}/{hour}/OR_{product_name}-M6C{int(band):02.0f}_G16_s{year}{day_of_year}{hour}{minute}'
+    bucket = 'noaa-goes16'
+    product = 'ABI-L2-CMIPF'
 
-    # File name format
-    file_name = f'OR_{product_name}-M6C{int(band):02.0f}_G16_s{year}{day_of_year}{hour}{minute}'
-    local_file_path = f'{path_dest}/{file_name}.nc'
-
-    # Check if the file already exists locally
-    if os.path.exists(local_file_path):
-        print(f'File {local_file_path} already exists')
-        return local_file_path
-
-    # Initialize the S3 client
     s3_client = boto3.client('s3', config=Config(signature_version=UNSIGNED))
+    prefix = f'{product}/{year}/{day}/{hour}/OR_{product}-M6C{int(band):02.0f}_G16_s{year}{day}{hour}{min}'
 
-    # Search for the file in the S3 bucket
-    s3_result = s3_client.list_objects_v2(Bucket=bucket_name, Prefix=prefix)
+    s3_list_objects = s3_client.list_objects_v2(Bucket=bucket, Prefix=prefix, Delimiter = "/")
 
-    # Check if there are any files available
-    if 'Contents' not in s3_result:
-        print(f'No files found for the date: {yyyymmddhhmn}, Band-{band}')
+    if 'Contents' not in s3_list_objects: 
+        print(f'There are no files for the date: {yyyymmddhhmn}, Band-{band}.')
         return -1
+    else:
+        for obj in s3_list_objects['Contents']: 
+            key = obj['Key']
+            name = key.split('/')[-1].split('.')[0]
 
-    # If the file exists in S3, download it
-    print(f'Downloading file {local_file_path}')
-    s3_client.download_file(bucket_name, s3_result['Contents'][0]['Key'], local_file_path)
+            file_path = Path(output_dir) / f'{name}.nc'
 
-    return local_file_path
+            if file_path.exists():
+                print(f'File {file_path} already exists.')
+            else:
+                print(f'Downloading: {file_path}')
+                s3_client.download_file(bucket, key, str(file_path))
+
+    return f'{name}'
 
 def reproject_img(output_file, nc_file, data_array, region_extent, no_data_value):
 
-    # Configurar as projeções de origem e destino
     src_proj = osr.SpatialReference()
     src_proj.ImportFromProj4(nc_file.GetProjectionRef())
 
     dst_proj = osr.SpatialReference()
     dst_proj.ImportFromProj4("+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs")
    
-    # Reprojetar os dados
     geo_transform = nc_file.GetGeoTransform()
     mem_driver = gdal.GetDriverByName('MEM')
     temp_ds = mem_driver.Create('temp', data_array.shape[0], data_array.shape[1], 1, gdal.GDT_Float32)
     temp_ds.SetGeoTransform(geo_transform)
     temp_ds.GetRasterBand(1).WriteArray(data_array)
 
-    # Definir os parâmetros do arquivo de saída  
     warp_options = {'format': 'netCDF',
                     'srcSRS': src_proj,
                     'dstSRS': dst_proj,
@@ -79,7 +69,6 @@ def reproject_img(output_file, nc_file, data_array, region_extent, no_data_value
                     'dstNodata': 'nan',
                     'resampleAlg': gdal.GRA_NearestNeighbour}
 
-    # Escrever o arquivo reprojetado no disco
     gdal.Warp(output_file, temp_ds, **warp_options)
 
 def read_color_palette(path):

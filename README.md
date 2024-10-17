@@ -2,8 +2,6 @@
 
 FrontPy is a Python package designed for the detection and analysis of atmospheric fronts. It uses the Thermal Front Parameter (TFP) method to identify cold and warm fronts. The package also includes visualization capabilities, allowing users to plot the identified fronts over GOES-16 East satellite imagery.
 
-Currently, only analysis and forecast data from the GFS 0.25 Degree Global Forecast model are supported.
-
 ## Installation of FrontPy
 
 ### Step 1: Create a new Conda environment
@@ -54,7 +52,8 @@ config = {
     "lat_min": -60,                 # Minimum latitude for the analysis area (degrees, range: -90 to 90) - float
     "lon_max": -20,                 # Maximum longitude for the analysis area (degrees, range: -180 to 180) - float
     "lon_min": -90,                 # Minimum longitude for the analysis area (degrees, range: -180 to 180) - float
-    "model_name": "GFS",            # Name of the model to be used (currently only GFS 0.25 Degree Global Forecast 0.25 data is supported) - string
+    "model_name": None,            # Name of the model to be used. Options available: ERA5, GFS or None). Choose None or leave it blank if you want to use your own files - string
+    "filepath": "path_to_your_netcdf_file", #Path to the local NetCDF file containing both u, v, specific humidity and temperature (required if model_name is None)
     "pressure": 850,                # [Default: 850] Atmospheric pressure level (hPa) at which front identification is performed - int
     "thetaw_thresh": 3.0,           # [Default: 3.0] Threshold for the magnitude of the gradient of potential wet-bulb temperature (K/100km) for front identification -  float
     "vf_thresh": 1.0,               # [Default: 1.0] Threshold for wind velocity (m/s) for front classification as cold or warm front - float
@@ -68,7 +67,11 @@ config = {
 }
 ```
 
-Currently, the default values have only been tested for the Southern Hemisphere.
+Currently, FrontPy allows you to automatically download ERA5 and GFS data (u, v, temperature, specific humidity) for calculating TFP and identify fronts. For this, enter "ERA5" or "GFS" in *model_name* parameter. 
+
+If you want to use your own files, all variables must be in one netcdf file. For this, enter None (or ) in *model_name* parameter. In this case, you must provide the path to the netcdf file in *filepath* parameter containing both u, v, specific humidity and temperature.
+
+**Note:** The default values have only been tested for the Southern Hemisphere.
 
 **Step 3: Call the main function**:
 
@@ -97,12 +100,23 @@ FrontPy also supports command-line execution through the *cli.py* file and the *
 To run FrontPy using the CLI, execute the following command in your terminal (without the <>):
 
 ```bash
-fronts <start_date> <end_date> <lat_max> <lat_min> <lon_max> <lon_min> <line_or_area> <output_directory_fronts>
+fronts <start_date> <end_date> <lat_max> <lat_min> <lon_max> <lon_min> <line_or_area> <output_directory_fronts> <mode>
 ```
 
-The above arguments are mandatory and must be provided in string format (in quotes) and in the specified order. Optional arguments can also be included using the following prefixes before the values of your choice:
+The above arguments are mandatory and must be provided in string format (in quotes) and in the specified order.
+
+**<Mode> Argument Explanation:**
+
+- To **identify and generate dataframes** for cold and warm fronts, type **"identify"** as the `<mode>` argument.
+
+- To **create the images** and create an animation, type **"plot"** as the `<mode>` argument.
+
+- To **perform both actions** type **"both"** as the `<mode>` argument.
+
+Optional arguments can also be included using the following prefixes before the values of your choice:
 
 - `--model-name`
+- `--filepath`
 - `--pressure`
 - `--thetaw-thresh`
 - `--vf-thresh`

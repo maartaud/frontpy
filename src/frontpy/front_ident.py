@@ -179,14 +179,6 @@ def front_identification(tfp_cold, tfp_warm, line_or_area, min_points, min_lengt
     df_contour = generate_unique_ids(df_contour)
     df_contourf = generate_unique_ids(df_contourf)
 
-    output_directory_fronts = Path2(output_directory_fronts)
-
-    output_filepath1 = output_directory_fronts / "frontal_lines.csv"
-    output_filepath2 = output_directory_fronts / "frontal_areas.csv"
-    
-    df_contour.to_csv(output_filepath1,index=False)
-    df_contourf.to_csv(output_filepath2,index=False)
-
     ffs = []
     fqs = []
     
@@ -219,5 +211,14 @@ def front_identification(tfp_cold, tfp_warm, line_or_area, min_points, min_lengt
 
     combined_ff = pd.concat(ffs, ignore_index=True)
     combined_fq = pd.concat(fqs, ignore_index=True)
+
+    #combined_ff_fq = pd.concat([combined_ff, combined_fq], ignore_index=True)
+
+    output_directory_fronts = Path2(output_directory_fronts)
+    output_filepath1 = output_directory_fronts / "cold_fronts.csv"
+    output_filepath2 = output_directory_fronts / "warm_fronts.csv"
+    
+    combined_ff.to_csv(output_filepath1,index=False)
+    combined_fq.to_csv(output_filepath2,index=False)
         
     return combined_ff, combined_fq
