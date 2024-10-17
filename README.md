@@ -126,7 +126,7 @@ Optional arguments can also be included using the following prefixes before the 
 - `--min-area`
 - `--frame-rate`
 
-### Real example using CLI:
+#### Real example using CLI:
 
 1. Using GFS data to identify and plot the results:
 
