@@ -12,7 +12,7 @@ First, you should create a new environment with the specific version of Python a
 conda create -n your_environment_name python=3.9.15 gdal=3.3.3 poppler=21.09 -c conda-forge
 ```
 
-Replace *your_environment_name* with your desired name for the environment. The conda will create an isolated environment with Python 3.9.15 and the gdal and poppler libraries, which are necessary for the functionality of FrontPy. Now, FrontPy will probably run smoothly without any errors.
+Replace **your_environment_name** with your desired name for the environment. The conda will create an isolated environment with Python 3.9.15 and the gdal and poppler libraries, which are necessary for the functionality of FrontPy. Now, FrontPy will probably run smoothly without any errors.
 
 ### Step 2: Activate your new Conda environment
 
@@ -67,9 +67,9 @@ config = {
 }
 ```
 
-Currently, FrontPy allows you to automatically download ERA5 and GFS data (u, v, temperature, specific humidity) for calculating TFP and identifying fronts. To do this, enter "ERA5" or "GFS" in the *model_name* parameter. 
+Currently, FrontPy allows you to automatically download ERA5 and GFS data (u, v, temperature, specific humidity) for calculating TFP and identifying fronts. To do this, enter "ERA5" or "GFS" in the **model_name** parameter. 
 
-If you want to use your own files, all variables must be contained in one netcdf file. In this case, enter None (or do not assign a value at all) in *model_name* parameter. You must provide the path to the netcdf file in the *filepath* parameter, which should include u, v, specific humidity and temperature.
+If you want to use your own files, all variables must be contained in one netcdf file. In this case, enter None (or do not assign a value at all) in **model_name** parameter. You must provide the path to the netcdf file in the **filepath** parameter, which should include u, v, specific humidity and temperature.
 
 **Note:** The default values have only been tested for the Southern Hemisphere.
 
@@ -85,7 +85,7 @@ cold_fronts, warm_fronts = main(config)
 
 **Step 4: Plot the images and generate an animation**:
 
-Lastly, you can plot the results and generate an animation (GIF) using the *plot_results* function. The images and animation will be saved in your output directory.
+Lastly, you can plot the results and generate an animation (GIF) using the **plot_results** function. The images and animation will be saved in your output directory.
 
 ```    
 plot_results(cold_fronts, warm_fronts, config)
@@ -95,7 +95,7 @@ plot_results(cold_fronts, warm_fronts, config)
 
 ### Command Line Interface (CLI)
 
-FrontPy also supports command-line execution through the *cli.py* file and the *fronts* function. This allows users to specify the parameters directly from the command line.
+FrontPy also supports command-line execution through the **cli.py** file and the **fronts** function. This allows users to specify the parameters directly from the command line.
 
 To run FrontPy using the CLI, execute the following command in your terminal (without the <>):
 
