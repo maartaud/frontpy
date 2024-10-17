@@ -131,13 +131,13 @@ Optional arguments can also be included using the following prefixes before the 
 1. Using GFS data to identify and plot the results:
 
 ```bash
-fronts "2024-10-10 00" "2024-10-11 00" "20" "-60" "-20" "-90" "line" "/output_directory/" "both" --model-name "GFS"
+fronts "2024-10-10 00" "2024-10-11 00" "20" "-60" "-20" "-90" "area" "/output_directory/" "both" --model-name "GFS"
 ```
 
 2. Using my own data:
 
 ```bash
-fronts "2024-10-10 00" "2024-10-11 00" "20" "-60" "-20" "-90" "line" "/output_directory/" "both" --filepath "/path_to_my_netcdf_file.nc"
+fronts "2024-10-10 00" "2024-10-11 00" "20" "-60" "-20" "-90" "area" "/output_directory/" "both" --filepath "/path_to_my_netcdf_file.nc"
 ```
 
 ## License
