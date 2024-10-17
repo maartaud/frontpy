@@ -52,7 +52,7 @@ config = {
     "lat_min": -60,                 # Minimum latitude for the analysis area (degrees, range: -90 to 90) - float
     "lon_max": -20,                 # Maximum longitude for the analysis area (degrees, range: -180 to 180) - float
     "lon_min": -90,                 # Minimum longitude for the analysis area (degrees, range: -180 to 180) - float
-    "model_name": None,            # Name of the model to be used. Options available: ERA5, GFS or None). Choose None or leave it blank if you want to use your own files - string
+    "model_name": None,            # Name of the dataset to be used. Options available: ERA5, GFS or None). Choose None or leave it blank if you want to use your own files - string
     "filepath": "path_to_your_netcdf_file", #Path to the local NetCDF file containing both u, v, specific humidity and temperature (required if model_name is None)
     "pressure": 850,                # [Default: 850] Atmospheric pressure level (hPa) at which front identification is performed - int
     "thetaw_thresh": 3.0,           # [Default: 3.0] Threshold for the magnitude of the gradient of potential wet-bulb temperature (K/100km) for front identification -  float

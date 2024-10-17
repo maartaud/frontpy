@@ -38,7 +38,7 @@ def run(
     mode: Mode = typer.Argument(..., help="Choose which task to perform: 'identify', 'plot', or 'both'"),
     
     # Optional arguments
-    model_name: str = typer.Option(None, help="(GFS, ERA5 or None for local file)"),
+    model_name: str = typer.Option(None, help="Name of the dataset to be used. Options available: ERA5, GFS or None). Choose None or leave it blank if you want to use your own files"),
     filepath: str = typer.Option(None, help="Path to the local NetCDF file containing u, v, specific humidity and temperature (required if model_name is None)"),
     pressure: str = typer.Option(850, help="Atmospheric pressure level (hPa) at which front identification is performed"),
     thetaw_thresh: str = typer.Option(3.0, help="Threshold for the magnitude of the gradient of potential wet-bulb temperature (K/100km) for front identification"),
