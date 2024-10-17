@@ -75,7 +75,7 @@ If you want to use your own files, all variables must be contained in one netcdf
 
 **Step 3: Call the main function**:
 
-The *main* function will return two Pandas dataframes: one for cold fronts and one for warm fronts.
+The *main* function will return two dataframes: one for cold fronts and one for warm fronts.
 
 So, you can call the main function like this:
 
