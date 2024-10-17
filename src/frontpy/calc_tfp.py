@@ -5,8 +5,6 @@ import numpy as np
 import os
 from scipy.ndimage import gaussian_filter
 from pathlib import Path
-from metpy.units import units
-
 
 def calculate_theta_w(ta, hus, p):
     ta = ta * units.kelvin
