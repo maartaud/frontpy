@@ -105,7 +105,7 @@ fronts <start_date> <end_date> <lat_max> <lat_min> <lon_max> <lon_min> <line_or_
 
 The above arguments are mandatory and must be provided in string format (in quotes) and in the specified order.
 
-**<Mode> Argument Explanation:**
+**'<Mode>' Argument Explanation:**
 
 - To **identify and generate dataframes** for cold and warm fronts, type **"identify"** as the `<mode>` argument.
 
