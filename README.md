@@ -67,9 +67,9 @@ config = {
 }
 ```
 
-Currently, FrontPy allows you to automatically download ERA5 and GFS data (u, v, temperature, specific humidity) for calculating TFP and identify fronts. For this, enter "ERA5" or "GFS" in *model_name* parameter. 
+Currently, FrontPy allows you to automatically download ERA5 and GFS data (u, v, temperature, specific humidity) for calculating TFP and identifying fronts. To do this, enter "ERA5" or "GFS" in the *model_name* parameter. 
 
-If you want to use your own files, all variables must be in one netcdf file. For this, enter None (or ) in *model_name* parameter. In this case, you must provide the path to the netcdf file in *filepath* parameter containing both u, v, specific humidity and temperature.
+If you want to use your own files, all variables must be contained in one netcdf file. In this case, enter None (or do not assign a value at all) in *model_name* parameter. You must provide the path to the netcdf file in the *filepath* parameter, which should include u, v, specific humidity and temperature.
 
 **Note:** The default values have only been tested for the Southern Hemisphere.
 
