@@ -34,7 +34,7 @@ pip install frontpy
 
 To use FrontPy, follow these steps:
 
-**Step 1: Import the main and plot_results functions from the package**:
+**Step 1: Open an .py file or a Jupyter Notebook and import the main and plot_results functions from the package**:
 
 ```python
 from frontpy import main, plot_results
