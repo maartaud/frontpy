@@ -75,7 +75,7 @@ If you want to use your own files, all variables must be contained in one netcdf
 
 **Step 3: Call the main function**:
 
-The *main* function will return two dataframes: one for cold fronts and one for warm fronts.
+The *main* function will return two dataframes: one for cold fronts and one for warm fronts. Also, it will save these dataframes as CSV files inside the output directory, as well as the corresponding TFP files.
 
 So, you can call the main function like this:
 
