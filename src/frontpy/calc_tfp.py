@@ -74,7 +74,8 @@ def save_to_netcdf(filepath, lons, lats, time, tfp, mag_dth, vf):
     print(f'Data saved in: {filepath}')
 
 def process_tfp(ds, start_date, end_date, model_name, output_directory_fronts, pressure=850, smooth_sigma=0.5):   
-
+    if model_name is None:
+        model_name = "MyData"
     if 'longitude' in ds.coords:
         ds = ds.rename({"longitude": "lon"})
     if 'latitude' in ds.coords:

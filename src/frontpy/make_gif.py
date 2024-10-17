@@ -15,6 +15,8 @@ def clear_directory(directory):
 
 
 def gif(model_name, start_date, end_date, frame_rate, line_or_area, output_directory_fronts):
+    if model_name is None:
+        model_name = "MyData"
     input_directory = os.path.join(output_directory_fronts,'figures')
     output_directory = os.path.join(output_directory_fronts,'figures/gif')
     temp_directory = os.path.join(output_directory_fronts,'figures/temp')

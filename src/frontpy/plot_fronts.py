@@ -36,7 +36,8 @@ cmap = ListedColormap(new_colors)
 
 
 def plot_fronts_satellite(model_name, ff, fq, line_or_area, lat_max, lat_min, lon_max, lon_min, min_area, output_directory_fronts):
-
+    if model_name is None:
+        model_name = "MyData"
     inputdata = Path(output_directory_fronts) / 'originals'
     outputdata = Path(output_directory_fronts) / 'finals'
     input_directory = Path(output_directory_fronts) / 'figures'

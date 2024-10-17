@@ -52,7 +52,7 @@ config = {
     "lat_min": -60,                 # Minimum latitude for the analysis area (degrees, range: -90 to 90) - float
     "lon_max": -20,                 # Maximum longitude for the analysis area (degrees, range: -180 to 180) - float
     "lon_min": -90,                 # Minimum longitude for the analysis area (degrees, range: -180 to 180) - float
-    "model_name": None,            # Name of the dataset to be used. Options available: ERA5, GFS or None). Choose None or leave it blank if you want to use your own files - string
+    "model_name": None,            # Name of the dataset to be used. (Options available: ERA5, GFS). Leave it unchanged if you want to use your own files - string
     "filepath": "path_to_your_netcdf_file", #Path to the local NetCDF file containing both u, v, specific humidity and temperature (required if model_name is None)
     "pressure": 850,                # [Default: 850] Atmospheric pressure level (hPa) at which front identification is performed - int
     "thetaw_thresh": 3.0,           # [Default: 3.0] Threshold for the magnitude of the gradient of potential wet-bulb temperature (K/100km) for front identification -  float
@@ -69,7 +69,7 @@ config = {
 
 Currently, FrontPy allows you to automatically download ERA5 and GFS data (u, v, temperature, specific humidity) for calculating TFP and identifying fronts. To do this, enter "ERA5" or "GFS" in the **model_name** parameter. 
 
-If you want to use your own files, all variables must be contained in one netcdf file. In this case, enter None (or do not assign a value at all) in **model_name** parameter. You must provide the path to the netcdf file in the **filepath** parameter, which should include u, v, specific humidity and temperature.
+If you want to use your own files, all variables must be contained in one netcdf file. In this case, do not assign any value for the **model_name** parameter. Instead, you must provide the path to the netcdf file in the **filepath** parameter, which should include u, v, specific humidity and temperature.
 
 **Note:** The default values have only been tested for the Southern Hemisphere.
 
@@ -125,6 +125,20 @@ Optional arguments can also be included using the following prefixes before the 
 - `--min-length`
 - `--min-area`
 - `--frame-rate`
+
+### Real example using CLI:
+
+1. Using GFS data to identify and plot the results:
+
+```bash
+fronts "2024-10-10 00" "2024-10-11 00" "20" "-60" "-20" "-90" "line" "/output_directory/" "both" --model-name "GFS"
+```
+
+2. Using my own data:
+
+```bash
+fronts "2024-10-10 00" "2024-10-11 00" "20" "-60" "-20" "-90" "line" "/output_directory/" "both" --filepath "/path_to_my_netcdf_file.nc"
+```
 
 ## License
 

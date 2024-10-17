@@ -65,7 +65,11 @@ def process_fronts(ds, config):
     process_tfp(ds, config['start_date'], config['end_date'], config['model_name'],
                 config['output_directory_fronts'], config['pressure'], config['smooth_sigma'])
     
-    tfp_filepath = Path(config['output_directory_fronts']) / f"tfp_files/tfp_{config['model_name']}.nc"
+    if config['model_name'] is None:
+        modelname = "MyData"
+        tfp_filepath = Path(config['output_directory_fronts']) / f"tfp_files/tfp_{modelname}.nc"
+    else:
+        tfp_filepath = Path(config['output_directory_fronts']) / f"tfp_files/tfp_{config['model_name']}.nc"
     tfp, mag_thetaw, vf = open_tfp(tfp_filepath)
     
     tfp_cold, tfp_warm = tfp_masks(tfp, mag_thetaw, vf, config['thetaw_thresh'], config['vf_thresh'])
