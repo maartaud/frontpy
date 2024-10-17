@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "frontpy"
-version = "0.1.13"
+version = "0.1.14"
 description = "FrontPy is a Python package designed for the detection and analysis of atmospheric fronts. It uses the Thermal Front Parameter (TFP) method to identify cold and warm fronts. The package also includes visualization capabilities, allowing users to plot the identified fronts over GOES-16 satellite imagery."
 keywords = ["fronts", "tfp", "thermal front parameter", "meteorology"]
 authors = [
