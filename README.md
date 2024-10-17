@@ -91,7 +91,7 @@ Lastly, you can plot the results and generate an animation (GIF) using the **plo
 plot_results(cold_fronts, warm_fronts, config)
 ```
 
-**Note**: *For now, it is only possible to generate images within the coverage area and the available data period of GOES-16 East available in AWS.*
+**Note**: *For now, it is only possible to generate images within the coverage area and the available data period of GOES-16 East as provided by AWS.*
 
 ### Command Line Interface (CLI)
 
