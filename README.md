@@ -91,7 +91,7 @@ Lastly, you can plot the results and generate an animation (GIF) using the **plo
 plot_results(cold_fronts, warm_fronts, config)
 ```
 
-**Obs**: For now, it is only possible to generate images within the coverage area of GOES-16 East.
+**Obs**: For now, it is only possible to generate images within the coverage area and the available data period of GOES-16 East.
 
 ### Command Line Interface (CLI)
 
@@ -107,9 +107,9 @@ The above arguments are mandatory and must be provided in string format (in quot
 
 **Mode Argument Explanation:**
 
-- To **identify and generate dataframes** for cold and warm fronts, type **"identify"** as the `<mode>` argument.
+- To only **identify and generate the files and dataframes** relative to the TFP field and to cold and warm fronts, type **"identify"** as the `<mode>` argument.
 
-- To **create the images** and create an animation, type **"plot"** as the `<mode>` argument.
+- To only **create the images and animation** based on the files and dataframes that have already been generated, type **"plot"** as the `<mode>` argument.
 
 - To **perform both actions** type **"both"** as the `<mode>` argument.
 
