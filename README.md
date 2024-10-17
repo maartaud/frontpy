@@ -71,7 +71,7 @@ Currently, FrontPy allows you to automatically download ERA5 and GFS data (u, v,
 
 If you want to use your own files, all variables must be contained in one netcdf file. In this case, do not assign any value for the **model_name** parameter. Instead, you must provide the path to the netcdf file in the **filepath** parameter, which should include u, v, specific humidity and temperature.
 
-**Note:** The default values have been tested only at the 850 hPa level over the the Southern Hemisphere and may need adjustments depending on the dataset and data resolution.
+**Note:** *The default values have been tested only at the 850 hPa level over the the Southern Hemisphere and may need adjustments depending on the dataset and data resolution.*
 
 **Step 3: Call the main function**:
 
@@ -91,7 +91,7 @@ Lastly, you can plot the results and generate an animation (GIF) using the **plo
 plot_results(cold_fronts, warm_fronts, config)
 ```
 
-**Obs**: For now, it is only possible to generate images within the coverage area and the available data period of GOES-16 East.
+**Note**: *For now, it is only possible to generate images within the coverage area and the available data period of GOES-16 East.*
 
 ### Command Line Interface (CLI)
 
